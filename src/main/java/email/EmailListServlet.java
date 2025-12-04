@@ -7,7 +7,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.mail.MessagingException;
 import business.User;
 import data.UserDB;
 import util.*;
@@ -92,13 +91,14 @@ public class EmailListServlet extends HttpServlet {
 
                 try {
                     MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
-                } catch (MessagingException e) {
+                } catch (Exception e) {
                     String errorMessage = 
                         "ERROR: Unable to send email. " + 
-                            "Check Tomcat logs for details.<br>" +
+                            "Check logs for details.<br>" +
                         "ERROR MESSAGE: " + e.getMessage();
                     request.setAttribute("errorMessage", errorMessage);
                     this.log("Unable to send email to " + email);
+                    e.printStackTrace();
                 }            
                 
                 // Chỉ chuyển sang trang cảm ơn khi thành công
